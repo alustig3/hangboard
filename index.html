@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vertical Timer Progress</title>
+    <title>Dual Timer Progress</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Simple Timer</h1>
+    <h1>Simple Dual Timer</h1>
     <div>
-        <input type="number" id="timeInput" placeholder="Enter seconds" min="1">
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
+        <input type="number" id="timeInput1" placeholder="Enter seconds for Timer 1" min="1">
+        <button id="start1">Start Timer 1</button>
+        <button id="stop1">Stop Timer 1</button>
+    </div>
+    <div>
+        <input type="number" id="timeInput2" placeholder="Enter seconds for Timer 2" min="1">
+        <button id="start2">Start Timer 2</button>
+        <button id="stop2">Stop Timer 2</button>
     </div>
     <div class="progress-container">
-        <div id="timeLabel">0s</div>
-        <div id="progressBar"></div>
+        <div class="progress-wrapper">
+            <div id="timeLabel1">0s</div>
+            <div id="progressBar1" class="progress-bar green"></div>
+        </div>
+        <div class="progress-wrapper">
+            <div id="timeLabel2">0s</div>
+            <div id="progressBar2" class="progress-bar orange"></div>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
