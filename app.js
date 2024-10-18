@@ -2,7 +2,7 @@ let timer1, timer2;
 let duration1, duration2;
 let progressInterval1, progressInterval2;
 
-function startTimer(inputId, labelId, progressBarId, intervalVar, durationVar) {
+function startTimer(inputId, labelId, progressBarId, intervalVar, durationVar, onEndCallback) {
     const seconds = parseInt(document.getElementById(inputId).value);
     if (isNaN(seconds) || seconds <= 0) {
         alert("Please enter a valid number of seconds.");
@@ -32,6 +32,9 @@ function startTimer(inputId, labelId, progressBarId, intervalVar, durationVar) {
         // Stop the timer when it reaches 100%
         if (now >= endTime) {
             clearInterval(intervalVar);
+            if (onEndCallback) {
+                onEndCallback();
+            }
         }
     }, 100);
 
@@ -53,7 +56,10 @@ function stopTimer(progressBarId, labelId, intervalVar) {
 
 // Start and Stop for Timer 1
 document.getElementById('start1').addEventListener('click', () => {
-    startTimer('timeInput1', 'timeLabel1', 'progressBar1', progressInterval1, duration1);
+    startTimer('timeInput1', 'timeLabel1', 'progressBar1', progressInterval1, duration1, () => {
+        // Automatically start Timer 2 when Timer 1 ends
+        startTimer('timeInput2', 'timeLabel2', 'progressBar2', progressInterval2, duration2);
+    });
 });
 
 document.getElementById('stop1').addEventListener('click', () => {
