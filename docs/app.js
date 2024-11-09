@@ -1,76 +1,68 @@
-let timer1, timer2;
-let duration1, duration2;
-let progressInterval1, progressInterval2;
+// Set up tabs for Setup and Main
+function openTab(tabName) {
+    document.getElementById('setup').style.display = tabName === 'setup' ? 'block' : 'none';
+    document.getElementById('main').style.display = tabName === 'main' ? 'block' : 'none';
+}
 
-function startTimer(inputId, labelId, progressBarId, intervalVar, durationVar, onEndCallback) {
-    const seconds = parseInt(document.getElementById(inputId).value);
-    if (isNaN(seconds) || seconds <= 0) {
-        alert("Please enter a valid number of seconds.");
-        return;
+// Dynamically generate 10 rows in Setup
+for (let i = 1; i <= 10; i++) {
+    const row = document.getElementById('inputRowTemplate').cloneNode(true);
+    row.id = `inputRow${i}`;
+    document.getElementById('routine-setup').appendChild(row);
+}
+document.getElementById('inputRowTemplate').remove();
+
+// Create progress bars in the Main tab based on Setup inputs
+function initializeRoutine() {
+    const progressContainer = document.getElementById('routine-progress');
+    progressContainer.innerHTML = '';  // Clear previous bars
+
+    for (let i = 1; i <= 10; i++) {
+        const greenBar = document.createElement('div');
+        const yellowBar = document.createElement('div');
+        greenBar.classList.add('progress-bar', 'green');
+        yellowBar.classList.add('progress-bar', 'yellow');
+        greenBar.id = `hangBar${i}`;
+        yellowBar.id = `restBar${i}`;
+
+        const barContainer = document.createElement('div');
+        barContainer.classList.add('progress-bar-container');
+        barContainer.appendChild(greenBar);
+        barContainer.appendChild(yellowBar);
+
+        progressContainer.appendChild(barContainer);
     }
+}
 
-    durationVar = seconds;
-    let startTime = Date.now();
-    let endTime = startTime + durationVar * 1000;
-    clearInterval(intervalVar);
+// Start Routine button behavior
+document.getElementById('startRoutine').addEventListener('click', () => {
+    initializeRoutine();
+    startRoutine(1, 'hang');
+});
 
-    // Update the time label at the start
-    document.getElementById(labelId).textContent = `${durationVar}s`;
+// Function to run each bar sequence in order
+function startRoutine(index, phase) {
+    const hangDuration = parseInt(document.getElementById(`inputRow${index}`).children[1].value) * 1000;
+    const restDuration = parseInt(document.getElementById(`inputRow${index}`).children[2].value) * 1000;
+    const bar = document.getElementById(`${phase === 'hang' ? 'hangBar' : 'restBar'}${index}`);
 
-    intervalVar = setInterval(() => {
-        const now = Date.now();
-        const elapsed = now - startTime;
-        const remaining = Math.max(Math.ceil((endTime - now) / 1000), 0);
-        const percentage = Math.min((elapsed / (durationVar * 1000)) * 100, 100);
+    let duration = phase === 'hang' ? hangDuration : restDuration;
+    let height = 0;
 
-        // Update the progress bar height
-        document.getElementById(progressBarId).style.height = `${percentage}%`;
+    const interval = setInterval(() => {
+        height += 100 / (duration / 100);
+        bar.style.width = `${height}%`;
 
-        // Update the time label
-        document.getElementById(labelId).textContent = `${remaining}s`;
-
-        // Stop the timer when it reaches 100%
-        if (now >= endTime) {
-            clearInterval(intervalVar);
-            if (onEndCallback) {
-                onEndCallback();
+        if (height >= 100) {
+            clearInterval(interval);
+            bar.classList.remove(phase === 'hang' ? 'green' : 'yellow');
+            bar.classList.add('grey');
+            
+            if (phase === 'hang') {
+                startRoutine(index, 'rest');
+            } else if (index < 10) {
+                startRoutine(index + 1, 'hang');
             }
         }
     }, 100);
-
-    // Save interval and duration variables for stopping
-    if (inputId === "timeInput1") {
-        progressInterval1 = intervalVar;
-        duration1 = durationVar;
-    } else {
-        progressInterval2 = intervalVar;
-        duration2 = durationVar;
-    }
 }
-
-function stopTimer(progressBarId, labelId, intervalVar) {
-    clearInterval(intervalVar);
-    document.getElementById(progressBarId).style.height = '0';
-    document.getElementById(labelId).textContent = '0s';
-}
-
-// Start and Stop for Timer 1
-document.getElementById('start1').addEventListener('click', () => {
-    startTimer('timeInput1', 'timeLabel1', 'progressBar1', progressInterval1, duration1, () => {
-        // Automatically start Timer 2 when Timer 1 ends
-        startTimer('timeInput2', 'timeLabel2', 'progressBar2', progressInterval2, duration2);
-    });
-});
-
-document.getElementById('stop1').addEventListener('click', () => {
-    stopTimer('progressBar1', 'timeLabel1', progressInterval1);
-});
-
-// Start and Stop for Timer 2
-document.getElementById('start2').addEventListener('click', () => {
-    startTimer('timeInput2', 'timeLabel2', 'progressBar2', progressInterval2, duration2);
-});
-
-document.getElementById('stop2').addEventListener('click', () => {
-    stopTimer('progressBar2', 'timeLabel2', progressInterval2);
-});
