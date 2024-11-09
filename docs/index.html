@@ -20,8 +20,8 @@
             <!-- 10 Rows of label and duration inputs -->
             <div class="input-row" id="inputRowTemplate">
                 <input type="text" class="label-input" placeholder="Label">
-                <input type="number" class="duration-input" placeholder="Hang (s)" min="1">
                 <input type="number" class="duration-input" placeholder="Rest (s)" min="1">
+                <input type="number" class="duration-input" placeholder="Hang (s)" min="1">
             </div>
         </div>
     </div>
@@ -29,8 +29,12 @@
     <!-- Main Tab -->
     <div id="main" class="tab-content" style="display: none;">
         <button id="startRoutine">Start Routine</button>
-        <div id="routine-progress">
-            <!-- 20 progress bars (2 for each row) will go here dynamically -->
+        <div class="main-layout">
+            <div id="restLabels" class="label-column"></div>
+            <div id="progressBarContainer" class="progress-bar-container">
+                <div id="progressBar" class="progress-bar grey"></div>
+            </div>
+            <div id="hangLabels" class="label-column"></div>
         </div>
     </div>
 

@@ -4,64 +4,78 @@ function openTab(tabName) {
     document.getElementById('main').style.display = tabName === 'main' ? 'block' : 'none';
 }
 
-// Dynamically generate 10 rows in Setup
+// Generate 10 rows in Setup and store labels and times
+const restDurations = [];
+const hangDurations = [];
 for (let i = 1; i <= 10; i++) {
     const row = document.getElementById('inputRowTemplate').cloneNode(true);
     row.id = `inputRow${i}`;
     document.getElementById('routine-setup').appendChild(row);
+    restDurations.push(row.children[1]);
+    hangDurations.push(row.children[2]);
 }
 document.getElementById('inputRowTemplate').remove();
 
-// Create progress bars in the Main tab based on Setup inputs
+// Initialize labels in the Main tab based on Setup inputs
 function initializeRoutine() {
-    const progressContainer = document.getElementById('routine-progress');
-    progressContainer.innerHTML = '';  // Clear previous bars
+    const restLabels = document.getElementById('restLabels');
+    const hangLabels = document.getElementById('hangLabels');
+    restLabels.innerHTML = '';  
+    hangLabels.innerHTML = '';  
 
-    for (let i = 1; i <= 10; i++) {
-        const greenBar = document.createElement('div');
-        const yellowBar = document.createElement('div');
-        greenBar.classList.add('progress-bar', 'green');
-        yellowBar.classList.add('progress-bar', 'yellow');
-        greenBar.id = `hangBar${i}`;
-        yellowBar.id = `restBar${i}`;
+    for (let i = 0; i < 10; i++) {
+        const restLabel = document.createElement('div');
+        restLabel.classList.add('label-item', 'grey');
+        restLabel.textContent = restDurations[i].value + 's';
+        restLabel.id = `restLabel${i + 1}`;
+        restLabels.appendChild(restLabel);
 
-        const barContainer = document.createElement('div');
-        barContainer.classList.add('progress-bar-container');
-        barContainer.appendChild(greenBar);
-        barContainer.appendChild(yellowBar);
-
-        progressContainer.appendChild(barContainer);
+        const hangLabel = document.createElement('div');
+        hangLabel.classList.add('label-item', 'grey');
+        hangLabel.textContent = hangDurations[i].value + 's';
+        hangLabel.id = `hangLabel${i + 1}`;
+        hangLabels.appendChild(hangLabel);
     }
 }
 
 // Start Routine button behavior
 document.getElementById('startRoutine').addEventListener('click', () => {
     initializeRoutine();
-    startRoutine(1, 'hang');
+    startRoutine(0, 'rest');
 });
 
-// Function to run each bar sequence in order
+// Function to run the routine with alternating rest and hang
 function startRoutine(index, phase) {
-    const hangDuration = parseInt(document.getElementById(`inputRow${index}`).children[1].value) * 1000;
-    const restDuration = parseInt(document.getElementById(`inputRow${index}`).children[2].value) * 1000;
-    const bar = document.getElementById(`${phase === 'hang' ? 'hangBar' : 'restBar'}${index}`);
+    if (index >= 10) return;
 
-    let duration = phase === 'hang' ? hangDuration : restDuration;
-    let height = 0;
+    const restTime = parseInt(restDurations[index].value) * 1000;
+    const hangTime = parseInt(hangDurations[index].value) * 1000;
+    const bar = document.getElementById('progressBar');
+    const label = document.getElementById(`${phase}Label${index + 1}`);
+
+    let duration = phase === 'rest' ? restTime : hangTime;
+    let increment = 100 / (duration / 100);
+    let height = phase === 'rest' ? 0 : 100;
+    let color = phase === 'rest' ? 'yellow' : 'green';
+    let highlightClass = phase === 'rest' ? 'highlight-yellow' : 'highlight-green';
+
+    bar.className = `progress-bar ${color}`;
+    label.classList.add(highlightClass);
 
     const interval = setInterval(() => {
-        height += 100 / (duration / 100);
-        bar.style.width = `${height}%`;
+        height += (phase === 'rest' ? increment : -increment);
+        bar.style.height = `${height}%`;
 
-        if (height >= 100) {
+        if ((phase === 'rest' && height >= 100) || (phase === 'hang' && height <= 0)) {
             clearInterval(interval);
-            bar.classList.remove(phase === 'hang' ? 'green' : 'yellow');
             bar.classList.add('grey');
-            
-            if (phase === 'hang') {
-                startRoutine(index, 'rest');
-            } else if (index < 10) {
-                startRoutine(index + 1, 'hang');
+            label.classList.remove(highlightClass);
+            label.classList.add('grey');
+
+            if (phase === 'rest') {
+                startRoutine(index, 'hang');
+            } else {
+                startRoutine(index + 1, 'rest');
             }
         }
     }, 100);
