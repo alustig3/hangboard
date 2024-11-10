@@ -7,15 +7,11 @@
 <body>
     <h1>Routine Timer</h1>
 
-    <!-- Tabs for Setup and Main -->
-    <div class="tabs">
-        <button onclick="openTab('setup')">Setup</button>
-        <button onclick="openTab('main')">Main</button>
-    </div>
+    <!-- Toggle Button for Editing -->
+    <button id="toggleEdit">Edit timers</button>
 
     <!-- Setup Tab -->
-    <div id="setup" class="tab-content">
-        <h2>Setup Routine</h2>
+    <div id="setup" class="tab-content" style="display: none;">
         <div id="routine-setup">
             <div>
                 <button id="importData">Paste and Import Data</button>
@@ -23,7 +19,6 @@
                 <button id="exportData">Export Setup Data</button>
             </div>
             <br>
-
 
             <div class="input-row" id="inputRowTemplate">
                 <input type="text" class="label-input" placeholder="Label">
@@ -34,18 +29,18 @@
     </div>
 
     <!-- Main Tab -->
-    <div id="main" class="tab-content" style="display: none;">
+    <div id="main" class="tab-content" style="display: block;">
         <button id="startRoutine">Start Routine</button>
         <button id="pauseRoutine">Pause</button>
         <button id="resetRoutine">Reset</button>
         <div class="main-layout">
-            <div id="setupLabels" class="label-column"></div>
             <div id="restLabels" class="label-column"></div>
+            <div id="setupLabels" class="label-column"></div>
+            <div id="hangLabels" class="label-column"></div>
             <div id="progressBarContainer" class="progress-bar-container">
                 <div id="progressBar" class="progress-bar grey"></div>
                 <div id="countdownLabel" class="countdown-label">0</div>
             </div>
-            <div id="hangLabels" class="label-column"></div>
         </div>
     </div>
 

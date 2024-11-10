@@ -8,7 +8,7 @@ body {
     background-color: #b0aeae; /* Set page background color */
 }
 
-.tabs button {
+button {
     padding: 10px 20px;
     margin: 5px;
 }
@@ -26,7 +26,7 @@ body {
 .label-input {
     margin-right: 10px;
     padding: 5px;
-    width: 100px;
+    width: 275px;
 }
 
 .duration-input {
@@ -37,26 +37,12 @@ body {
 
 .main-layout {
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
-.label-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-}
-
-.label-item {
-    padding: 5px;
-    font-size: 30px; /* Increased font size for time labels */
-    color: black;
-}
-
 .progress-bar-container {
-    width: 60px;
-    height: 80vh;
+    width: 100px; /* Increased width for the progress bar */
+    min-height: 400px;
     background-color: #ddd;
     position: relative;
     margin: 0 10px;
@@ -66,6 +52,20 @@ body {
     align-items: flex-end;
 }
 
+.label-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Right-align all labels in the column */
+    padding: 10px;
+    text-align: right;
+}
+
+.label-item {
+    padding: 5px;
+    font-size: 18px;
+    color: black;
+    border-radius: 8px;
+}
 .progress-bar {
     width: 100%;
     height: 0;
@@ -84,31 +84,14 @@ body {
     background-color: #4caf50;
 }
 
-.label-item.completed-label {
-    color: #808080 !important; /* Grey color for completed labels */
-    /* text-decoration: line-through; Strikethrough effect */
-}
 .countdown-label {
-    font-size: 28px; /* Larger font for the countdown label */
+    font-size: 55px; /* Larger font for the countdown label */
     font-weight: bold;
     color: black;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.label-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-}
-
-.label-item {
-    padding: 5px;
-    font-size: 18px;
-    color: black;
 }
 
 .completed-label {
@@ -119,3 +102,4 @@ body {
     font-size: 24px; /* Increase the font size for active labels */
     font-weight: bold;
 }
+
