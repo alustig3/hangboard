@@ -21,28 +21,41 @@ function openTab(tabName) {
 // Generate 10 rows in Setup and store labels and times
 const restDurations = [];
 const hangDurations = [];
+const setupLabels = [];
 for (let i = 1; i <= 10; i++) {
     const row = document.getElementById('inputRowTemplate').cloneNode(true);
     row.id = `inputRow${i}`;
     
     // Set default values for rest (10s) and hang (5s)
-    row.children[1].value = 10;
-    row.children[2].value = 5;
+    row.children[0].value = "jake";
+    row.children[1].value = 2;
+    row.children[2].value = 3;
 
     document.getElementById('routine-setup').appendChild(row);
+    setupLabels.push(row.children[0].value); // Save setup label text
     restDurations.push(row.children[1]);
     hangDurations.push(row.children[2]);
 }
 document.getElementById('inputRowTemplate').remove();
 
-// Initialize labels in the Main tab based on Setup inputs
 function initializeRoutine() {
+    const setupLabelsContainer = document.getElementById('setupLabels');
     const restLabels = document.getElementById('restLabels');
     const hangLabels = document.getElementById('hangLabels');
+    setupLabelsContainer.innerHTML = '';
     restLabels.innerHTML = '';  
     hangLabels.innerHTML = '';  
 
     for (let i = 0; i < 10; i++) {
+        // Retrieve the label text directly from the input field each time
+        const setupLabelText = document.getElementById(`inputRow${i + 1}`).children[0].value;
+
+        const setupLabel = document.createElement('div');
+        setupLabel.classList.add('label-item');
+        setupLabel.textContent = setupLabelText || "Label"; // Use "Label" as a fallback
+        setupLabel.id = `setupLabel${i + 1}`;
+        setupLabelsContainer.appendChild(setupLabel);
+
         const restLabel = document.createElement('div');
         restLabel.classList.add('label-item');
         restLabel.textContent = restDurations[i].value;
@@ -56,6 +69,7 @@ function initializeRoutine() {
         hangLabels.appendChild(hangLabel);
     }
 }
+
 
 // Start Routine button behavior
 startButton.addEventListener('click', () => {
@@ -108,6 +122,21 @@ function startRoutine(index, phase, durationOverride = null) {
     const bar = document.getElementById('progressBar');
     const countdownLabel = document.getElementById('countdownLabel');
     const label = document.getElementById(`${phase}Label${index + 1}`);
+    const setupLabel = document.getElementById(`setupLabel${index + 1}`); // Corresponding setup label
+    const restLabel = document.getElementById(`restLabel${index + 1}`);
+    const hangLabel = document.getElementById(`hangLabel${index + 1}`);
+
+    // Clear the active label class from previous row
+    if (index > 0) {
+        document.getElementById(`setupLabel${index}`).classList.remove('active-label');
+        document.getElementById(`restLabel${index}`).classList.remove('active-label');
+        document.getElementById(`hangLabel${index}`).classList.remove('active-label');
+    }
+
+    // Apply the active label class to the current row
+    setupLabel.classList.add('active-label');
+    restLabel.classList.add('active-label');
+    hangLabel.classList.add('active-label');
 
     let duration = durationOverride || (phase === 'rest' ? restTime : hangTime);
     remainingDuration = duration;
@@ -135,6 +164,11 @@ function startRoutine(index, phase, durationOverride = null) {
             bar.classList.add('grey');
             label.classList.add('completed-label'); // Add completed class for grey and strikethrough
 
+            // Apply strikethrough to setup label only after the hang phase completes
+            if (phase === 'hang') {
+                setupLabel.classList.add('completed-label');
+            }
+
             if (phase === 'rest') {
                 startRoutine(index, 'hang');
             } else {
@@ -143,3 +177,4 @@ function startRoutine(index, phase, durationOverride = null) {
         }
     }, 100);
 }
+
