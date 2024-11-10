@@ -45,7 +45,7 @@ button {
     min-height: 400px;
     background-color: #ffffff;
     position: relative;
-    margin: 0 10px;
+    margin: 10px;
     border-radius: 5px;
     overflow: hidden;
     display: flex;
@@ -99,7 +99,42 @@ button {
 }
 
 .active-label {
-    font-size: 24px; /* Increase the font size for active labels */
+    /* font-size: 24px; Increase the font size for active labels */
     font-weight: bold;
 }
 
+
+@media (max-width: 600px) {
+    /* Increase font size for better readability */
+    .label-item{
+        font-size: 22px;
+    }
+    .countdown-label {
+        font-size: 60px;
+    }
+
+    /* Adjust progress bar height and width on small screens */
+    .progress-bar-container {
+        width: 30%;
+    }
+
+    /* Center align labels on smaller screens */
+    .label-column {
+        align-items: center;
+        padding: 5px;
+    }
+    
+    /* Adjust input rows */
+    .label-input {
+        width: 70%;
+    }
+
+    .duration-input {
+        width: 25%;
+    }
+
+    .tab-content {
+        padding: 0px;
+        width: 100%;
+    }
+}

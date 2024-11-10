@@ -75,20 +75,19 @@ function initializeRoutine() {
 startButton.addEventListener('click', () => {
     startButton.disabled = true; // Disable Start button after it's pressed
     pauseButton.disabled = false; // Enable Pause button after Start is pressed
-    initializeRoutine();
     startRoutine(0, 'rest');
 });
 
 // Pause/Resume button behavior
 pauseButton.addEventListener('click', () => {
     if (isPaused) {
-        pauseButton.textContent = 'Pause';
+        // pauseButton.textContent = 'Pause';
         startRoutine(currentIndex, currentPhase, remainingDuration); // Resume with remaining time
         isPaused = false;
     } else {
         clearInterval(currentInterval); // Pause the interval
         isPaused = true;
-        pauseButton.textContent = 'Resume';
+        // pauseButton.textContent = 'Resume';
     }
 });
 
@@ -98,7 +97,7 @@ resetButton.addEventListener('click', () => {
         clearInterval(currentInterval);
         document.getElementById('progressBar').style.height = '0';
         document.getElementById('countdownLabel').textContent = '0';
-        pauseButton.textContent = 'Pause'; // Reset Pause button text
+        // pauseButton.textContent = 'Pause'; // Reset Pause button text
         isPaused = false;
         remainingDuration = 0;
         currentIndex = 0;
@@ -117,7 +116,7 @@ function playBeep(seconds = 0.25, frequency = 1000) {
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     oscillator.frequency.value = frequency; // Set the frequency (pitch)
-    gainNode.gain.value = 0.1; // Volume of the beep
+    gainNode.gain.value = 0.3; // Volume of the beep
 
     oscillator.start();
     setTimeout(() => {
@@ -312,14 +311,15 @@ const toggleEditButton = document.getElementById('toggleEdit');
 toggleEditButton.addEventListener('click', () => {
     const setupTab = document.getElementById('setup');
     const mainTab = document.getElementById('main');
+    setupTab.style.display = 'block';
+    mainTab.style.display = 'none';
+});
 
-    if (setupTab.style.display === 'none') {
-        setupTab.style.display = 'block';
-        mainTab.style.display = 'none';
-        toggleEditButton.textContent = 'Done editing';
-    } else {
-        setupTab.style.display = 'none';
-        mainTab.style.display = 'block';
-        toggleEditButton.textContent = 'Edit timers';
-    }
+const toggleEditButton2 = document.getElementById('toggleEdit_2');
+toggleEditButton2.addEventListener('click', () => {
+    const setupTab = document.getElementById('setup');
+    const mainTab = document.getElementById('main');
+    setupTab.style.display = 'none';
+    mainTab.style.display = 'block';
+    initializeRoutine();
 });
