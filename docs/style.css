@@ -103,6 +103,12 @@ button {
     font-weight: bold;
 }
 
+.completion-time {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
 
 @media (max-width: 600px) {
     /* Increase font size for better readability */

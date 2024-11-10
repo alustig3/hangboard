@@ -18,7 +18,6 @@ function openTab(tabName) {
     document.getElementById('main').style.display = tabName === 'main' ? 'block' : 'none';
 }
 
-// Generate 10 rows in Setup and store labels and times
 const restDurations = [];
 const hangDurations = [];
 const setupLabels = [];
@@ -68,6 +67,7 @@ function initializeRoutine() {
         hangLabel.id = `hangLabel${i + 1}`;
         hangLabels.appendChild(hangLabel);
     }
+    updateEstimatedCompletionTime();
 }
 
 
@@ -76,6 +76,7 @@ startButton.addEventListener('click', () => {
     startButton.disabled = true; // Disable Start button after it's pressed
     pauseButton.disabled = false; // Enable Pause button after Start is pressed
     startRoutine(0, 'rest');
+    updateEstimatedCompletionTime();
 });
 
 // Pause/Resume button behavior
@@ -83,6 +84,7 @@ pauseButton.addEventListener('click', () => {
     if (isPaused) {
         startRoutine(currentIndex, currentPhase, remainingDuration); // Resume with remaining time
         isPaused = false;
+        updateEstimatedCompletionTime();
     } else {
         clearInterval(currentInterval); // Pause the interval
         isPaused = true;
@@ -202,7 +204,6 @@ function startRoutine(index, phase, durationOverride = null) {
 }
 
 
-
 // Export Setup Data Button
 document.getElementById('exportData').addEventListener('click', () => {
     const rows = [];
@@ -312,3 +313,40 @@ toggleEditButton2.addEventListener('click', () => {
     mainTab.style.display = 'block';
     initializeRoutine();
 });
+
+// Function to calculate and display estimated completion time
+function updateEstimatedCompletionTime() {
+    const currentTime = new Date();
+    let totalDurationInSeconds = 0;
+
+    // Calculate total duration from remaining rest and hang times
+    const rows = document.querySelectorAll('#routine-setup .input-row');
+    rows.forEach((row, index) => {
+        if (index < currentIndex) {
+            // Skip rows that have already completed
+            return;
+        }
+        
+        const restTime = parseInt(row.children[1].value) || 0;
+        const hangTime = parseInt(row.children[2].value) || 0;
+        totalDurationInSeconds += restTime + hangTime;
+    });
+    console.log(currentTime);
+
+    // Calculate the estimated completion time
+    const completionTime = new Date(currentTime.getTime() + totalDurationInSeconds * 1000);
+    console.log(completionTime);
+
+    // Format the completion time as HH:MM AM/PM
+    const hours = completionTime.getHours();
+    const minutes = completionTime.getMinutes().toString().padStart(2, '0');
+    const seconds = completionTime.getSeconds().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedTime = `will finish at ${(hours % 12) || 12}:${minutes}:${seconds} ${ampm}`;
+
+
+    // Display the formatted time
+    document.getElementById('completionTime').textContent = formattedTime;
+}
+
+
