@@ -81,13 +81,11 @@ startButton.addEventListener('click', () => {
 // Pause/Resume button behavior
 pauseButton.addEventListener('click', () => {
     if (isPaused) {
-        // pauseButton.textContent = 'Pause';
         startRoutine(currentIndex, currentPhase, remainingDuration); // Resume with remaining time
         isPaused = false;
     } else {
         clearInterval(currentInterval); // Pause the interval
         isPaused = true;
-        // pauseButton.textContent = 'Resume';
     }
 });
 
@@ -180,13 +178,6 @@ function startRoutine(index, phase, durationOverride = null) {
             playBeep(0.25, 1000);
             lastBeepTime = remainingSeconds;
         }
-
-        // // Play a 1-second, 1200Hz beep for the final second of the rest timer
-        // if (phase === 'rest' && remainingSeconds === 1 && remainingSeconds !== lastBeepTime) {
-        //     playBeep(1, 1000);
-        //     lastBeepTime = remainingSeconds;
-        // }
-
         if ((phase === 'rest' && height >= 100) || (phase === 'hang' && height <= 0)) {
             clearInterval(currentInterval);
             currentHeight = 0; // Reset height tracking for the next phase
@@ -211,8 +202,6 @@ function startRoutine(index, phase, durationOverride = null) {
 }
 
 
-
-// Export Setup Data Button
 
 // Export Setup Data Button
 document.getElementById('exportData').addEventListener('click', () => {
