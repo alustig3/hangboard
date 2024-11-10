@@ -178,3 +178,50 @@ function startRoutine(index, phase, durationOverride = null) {
     }, 100);
 }
 
+// Export Setup Data Button
+
+// Export Setup Data Button
+document.getElementById('exportData').addEventListener('click', () => {
+    const rows = [];
+    
+    for (let i = 1; i <= 10; i++) {
+        const label = document.getElementById(`inputRow${i}`).children[0].value || "Label";
+        const rest = document.getElementById(`inputRow${i}`).children[1].value || "0";
+        const hang = document.getElementById(`inputRow${i}`).children[2].value || "0";
+        
+        rows.push(`${label}\t${rest}\t${hang}`);
+    }
+
+    const exportData = rows.join('\n');
+    
+    navigator.clipboard.writeText(exportData).then(() => {
+        alert("Exported data has been copied to the clipboard!");
+    }).catch(err => {
+        console.error("Could not copy text: ", err);
+    });
+});
+
+// Import Setup Data Button
+document.getElementById('importData').addEventListener('click', () => {
+    const dataInput = document.getElementById('dataInput');
+    dataInput.style.display = dataInput.style.display === 'none' ? 'block' : 'none';
+});
+
+// Load Data from Pasted String
+document.getElementById('dataInput').addEventListener('input', () => {
+    const data = document.getElementById('dataInput').value.trim();
+    const rows = data.split('\n');
+
+    rows.forEach((row, i) => {
+        const [label, rest, hang] = row.split('\t');
+
+        if (document.getElementById(`inputRow${i + 1}`)) {
+            document.getElementById(`inputRow${i + 1}`).children[0].value = label || "";
+            document.getElementById(`inputRow${i + 1}`).children[1].value = rest || "0";
+            document.getElementById(`inputRow${i + 1}`).children[2].value = hang || "0";
+        }
+    });
+
+    alert("Imported data successfully!");
+    document.getElementById('dataInput').style.display = 'none'; // Hide textarea after importing
+});
