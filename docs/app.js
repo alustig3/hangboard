@@ -193,7 +193,7 @@ function startRoutine(index, phase, durationOverride = null) {
             currentHeight = 0; // Reset height tracking for the next phase
             bar.classList.add('grey');
             label.style.background = 'none';
-            // label.classList.add('completed-label'); // Add completed class for grey and strikethrough
+            label.classList.add('completed-label'); // Add completed class for grey and strikethrough
 
             // Apply strikethrough to setup label only after the hang phase completes
             if (phase === 'hang') {
