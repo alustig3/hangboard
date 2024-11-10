@@ -1,5 +1,11 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #b0aeae; /* Set page background color */
 }
 
 .tabs button {
@@ -44,7 +50,8 @@ body {
 
 .label-item {
     padding: 5px;
-    font-size: 16px;
+    font-size: 30px; /* Increased font size for time labels */
+    color: black;
 }
 
 .progress-bar-container {
@@ -77,10 +84,16 @@ body {
     background-color: #4caf50;
 }
 
-.highlight-yellow {
-    background-color: #fff7e6;
+.label-item.completed-label {
+    color: #808080 !important; /* Grey color for completed labels */
+    /* text-decoration: line-through; Strikethrough effect */
 }
-
-.highlight-green {
-    background-color: #e6ffe6;
+.countdown-label {
+    font-size: 28px; /* Larger font for the countdown label */
+    font-weight: bold;
+    color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

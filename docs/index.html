@@ -17,7 +17,6 @@
     <div id="setup" class="tab-content">
         <h2>Setup Routine</h2>
         <div id="routine-setup">
-            <!-- 10 Rows of label and duration inputs -->
             <div class="input-row" id="inputRowTemplate">
                 <input type="text" class="label-input" placeholder="Label">
                 <input type="number" class="duration-input" placeholder="Rest (s)" min="1">
@@ -29,10 +28,13 @@
     <!-- Main Tab -->
     <div id="main" class="tab-content" style="display: none;">
         <button id="startRoutine">Start Routine</button>
+        <button id="pauseRoutine">Pause</button>
+        <button id="resetRoutine">Reset</button>
         <div class="main-layout">
             <div id="restLabels" class="label-column"></div>
             <div id="progressBarContainer" class="progress-bar-container">
                 <div id="progressBar" class="progress-bar grey"></div>
+                <div id="countdownLabel" class="countdown-label">0</div>
             </div>
             <div id="hangLabels" class="label-column"></div>
         </div>
