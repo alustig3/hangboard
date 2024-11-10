@@ -9,8 +9,8 @@ body {
 }
 
 button {
-    padding: 10px 20px;
-    margin: 5px;
+    padding: 5px 25px;
+    margin: 2px;
 }
 
 .tab-content {
@@ -20,7 +20,7 @@ button {
 
 #setup .input-row {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .label-input {
@@ -104,7 +104,6 @@ button {
 }
 
 .completion-time {
-    margin-top: 20px;
     font-size: 18px;
     text-align: center;
 }
