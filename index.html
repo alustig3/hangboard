@@ -1,104 +1,150 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Routine Timer</title>
-    <link rel="stylesheet" href="style.css?v=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.1">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Hang Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#dbd8c5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
-
 <body>
-    <!-- Main Tab -->
-    <div id="main" class="tab-content" style="display: block;">
-        <button id="startRoutine">
-            <svg id="startIcon" fill="none" viewBox="0 0 24 24" height="24" width="24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path xmlns="http://www.w3.org/2000/svg"
-                    d="M6 6.74105C6 5.19747 7.67443 4.23573 9.00774 5.01349L18.0231 10.2725C19.3461 11.0442 19.3461 12.9558 18.0231 13.7276L9.00774 18.9865C7.67443 19.7643 6 18.8026 6 17.259V6.74105ZM17.0154 12L8 6.74105V17.259L17.0154 12Z"
-                    fill="#0D0D0D"></path>
-            </svg>
-        </button>
-        <button id="resetRoutine">
-            <svg fill="none" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
-                <path xmlns="http://www.w3.org/2000/svg"
-                    d="M12.2071 2.29289C12.5976 2.68342 12.5976 3.31658 12.2071 3.70711L10.9142 5H12.5C17.1523 5 21 8.84772 21 13.5C21 18.1523 17.1523 22 12.5 22C7.84772 22 4 18.1523 4 13.5C4 12.9477 4.44772 12.5 5 12.5C5.55228 12.5 6 12.9477 6 13.5C6 17.0477 8.95228 20 12.5 20C16.0477 20 19 17.0477 19 13.5C19 9.95228 16.0477 7 12.5 7H10.9142L12.2071 8.29289C12.5976 8.68342 12.5976 9.31658 12.2071 9.70711C11.8166 10.0976 11.1834 10.0976 10.7929 9.70711L7.79289 6.70711C7.40237 6.31658 7.40237 5.68342 7.79289 5.29289L10.7929 2.29289C11.1834 1.90237 11.8166 1.90237 12.2071 2.29289Z"
-                    fill="#0D0D0D"></path>
-            </svg>
-        </button>
-        <button id="edit-button">
-            <svg fill="none" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
-                <path xmlns="http://www.w3.org/2000/svg"
-                    d="M16.2929 2.29289C16.6834 1.90237 17.3166 1.90237 17.7071 2.29289L21.7071 6.29289C22.0976 6.68342 22.0976 7.31658 21.7071 7.70711L8.70711 20.7071C8.51957 20.8946 8.26522 21 8 21H4C3.44772 21 3 20.5523 3 20V16C3 15.7348 3.10536 15.4804 3.29289 15.2929L13.2927 5.2931L16.2929 2.29289ZM14 7.41421L5 16.4142V19H7.58579L16.5858 10L14 7.41421ZM18 8.58579L19.5858 7L17 4.41421L15.4142 6L18 8.58579Z"
-                    fill="#0D0D0D"></path>
-            </svg>
-        </button>
-        <div class="main-layout">
-            <div id="restLabels" class="label-column"></div>
-            <div id="setupLabels" class="label-column"></div>
-            <div id="hangLabels" class="label-column"></div>
-            <div id="progressBarContainer" class="progress-bar-container">
-                <div id="progressBar" class="progress-bar grey"></div>
-                <div id="countdownLabel" class="countdown-label">0</div>
-            </div>
-        </div>
-        <div id="estimatedCompletionTime" class="completion-time">
-            <span id="completionTime"></span>
-        </div>
-    </div>
-
-    <!-- Setup Tab -->
-    <div id="setup" class="tab-content" style="display: none;">
-        <div id="routine-setup">
-            <div>
-                <button id="back-button">
-                    <svg fill="none" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path xmlns="http://www.w3.org/2000/svg"
-                            d="M11.7071 5.29289C12.0976 5.68342 12.0976 6.31658 11.7071 6.70711L7.41421 11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H7.41421L11.7071 17.2929C12.0976 17.6834 12.0976 18.3166 11.7071 18.7071C11.3166 19.0976 10.6834 19.0976 10.2929 18.7071L4.29289 12.7071C4.10536 12.5196 4 12.2652 4 12C4 11.7348 4.10536 11.4804 4.29289 11.2929L10.2929 5.29289C10.6834 4.90237 11.3166 4.90237 11.7071 5.29289Z"
-                            fill="#0D0D0D"></path>
+    <div id="app">
+        <!-- Timer View -->
+        <div id="timer-view" class="view active">
+            <header class="header">
+                <h1 class="app-title">Hang Timer</h1>
+                <button id="btn-edit" class="icon-btn" aria-label="Edit routine">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                     </svg>
                 </button>
-            </div>
+            </header>
 
-            <div>
-                This routine is based on Dave MacLeod's <a href="https://youtu.be/PebF3NyEGPc?si=bg1f0wf3lGNIgEm6">video</a>.
-                There are 8 warm-up sets followed by 9 "max hang" sets. (<a href="#" class="text-toggle">show grips ▼</a>)
-                <div class="toggle-container">
-                    <div class="toggle-content" id="grips-container" style="display: none;">
-                        <ul>
-                            <img src="grips/crimp.jpg" alt="Half Crimp" class="grips">
-                            <br>
-                            <caption>Half Crimp</caption>
-                        </ul>
-                        <ul>
-                            <img src="grips/chisel.jpg" alt="Half Crimp" class="grips">
-                            <br>
-                            <caption>Chisel</caption>
-                        </ul>
-                        <ul>
-                            <img src="grips/drag.jpg" alt="Half Crimp" class="grips">
-                            <br>
-                            <caption>Drag</caption>
-                        </ul>
+            <div class="timer-display">
+                <div class="progress-bar-track">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                    <div class="progress-bar-inner">
+                        <span id="countdown" class="countdown">0</span>
                     </div>
                 </div>
-
+                <div id="phase-label" class="phase-label">READY</div>
             </div>
 
-            <div class="input-row">
-                <div class="label-input">Description</div>
-                <div class="duration-input">Rest</div>
-                <div class="duration-input">Hang</div>
+            <div id="timer-list" class="timer-list"></div>
+
+            <div class="controls-bar">
+                <div class="controls-side controls-left">
+                    <button id="btn-reset" class="control-btn" aria-label="Reset">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"/>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                        </svg>
+                    </button>
+                </div>
+                <button id="btn-play" class="control-btn primary" aria-label="Play">
+                    <svg id="play-icon" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </button>
+                <div class="controls-side controls-info">
+                    <div id="time-left" class="controls-time"></div>
+                    <div id="time-done" class="controls-time"></div>
+                </div>
             </div>
-            <div class="input-row" id="inputRowTemplate">
-                <input type="text" class="label-input" placeholder="Label">
-                <input type="number" class="duration-input" placeholder="Rest (s)" min="1">
-                <input type="number" class="duration-input" placeholder="Hang (s)" min="1">
+        </div>
+
+        <!-- Edit View -->
+        <div id="edit-view" class="view">
+            <header class="header">
+                <button id="btn-back" class="icon-btn" aria-label="Back">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12 19 5 12 12 5"/>
+                    </svg>
+                </button>
+                <h1 class="app-title">Edit Routine</h1>
+                <button id="btn-add" class="icon-btn" aria-label="Add timer">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </button>
+            </header>
+
+            <details class="info-panel" open>
+                <summary>About this routine</summary>
+                <p>
+                    Based on Dave MacLeod's
+                    <a href="https://youtu.be/PebF3NyEGPc?si=bg1f0wf3lGNIgEm6" target="_blank" rel="noopener">hangboard routine</a>.
+                    8 warm-up sets followed by 9 &ldquo;max hang&rdquo; sets.
+                </p>
+                <div class="grip-images">
+                    <figure class="grip-card">
+                        <img src="grips/crimp.jpg" alt="Half Crimp" loading="lazy">
+                        <figcaption>Half Crimp</figcaption>
+                    </figure>
+                    <figure class="grip-card">
+                        <img src="grips/chisel.jpg" alt="Chisel" loading="lazy">
+                        <figcaption>Chisel</figcaption>
+                    </figure>
+                    <figure class="grip-card">
+                        <img src="grips/drag.jpg" alt="Drag" loading="lazy">
+                        <figcaption>Drag</figcaption>
+                    </figure>
+                </div>
+            </details>
+
+            <div class="edit-list-header">
+                <div class="elh-drag"></div>
+                <div class="elh-check">
+                    <input type="checkbox" id="select-all">
+                </div>
+                <div class="elh-label">Label</div>
+                <div class="elh-time">Rest</div>
+                <div class="elh-time">Hang</div>
+                <span id="selected-count" class="selected-count"></span>
+            </div>
+
+            <div id="edit-list" class="edit-list"></div>
+
+            <!-- Group action bar -->
+            <div id="group-bar" class="group-bar hidden">
+                <span id="group-info" class="group-info">0 selected</span>
+                <button id="btn-group-edit" class="btn btn-primary">Edit</button>
+                <button id="btn-delete-selected" class="btn btn-danger">Remove</button>
+            </div>
+
+            <!-- Group edit bottom sheet -->
+            <div id="group-modal" class="modal hidden">
+                <div class="modal-backdrop"></div>
+                <div class="modal-sheet">
+                    <h2>Edit Selected Timers</h2>
+                    <div class="form-row">
+                        <label for="group-label">Label</label>
+                        <input type="text" id="group-label" placeholder="Leave blank to keep">
+                    </div>
+                    <div class="form-row">
+                        <label for="group-rest">Rest (seconds)</label>
+                        <input type="number" id="group-rest" min="1" value="10">
+                    </div>
+                    <div class="form-row">
+                        <label for="group-hang">Hang (seconds)</label>
+                        <input type="number" id="group-hang" min="1" value="10">
+                    </div>
+                    <div class="modal-actions">
+                        <button id="btn-modal-cancel" class="btn btn-secondary">Cancel</button>
+                        <button id="btn-modal-apply" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     <script src="app.js"></script>
 </body>
-
 </html>
