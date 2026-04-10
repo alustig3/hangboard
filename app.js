@@ -668,10 +668,10 @@ function setupEventListeners() {
 
     // Progress bar: tap to seek
     const progressTrack = $('.progress-bar-track');
-    progressTrack.addEventListener('click', (e) => {
+    function seekToPosition(clientX) {
         if (!currentPhase || !isPlaying) return;
         const rect = progressTrack.getBoundingClientRect();
-        const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const fraction = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 
         if (currentPhase === 'rest') {
             remainingMs = totalPhaseMs * (1 - fraction);
@@ -682,6 +682,13 @@ function setupEventListeners() {
         remainingMs = Math.max(0, remainingMs);
         updateCountdown();
         updateCompletionTime();
+    }
+    progressTrack.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        seekToPosition(e.changedTouches[0].clientX);
+    });
+    progressTrack.addEventListener('click', (e) => {
+        seekToPosition(e.clientX);
     });
 
     // Grip image lightbox
