@@ -666,6 +666,24 @@ function setupEventListeners() {
         renderEditList();
     });
 
+    // Progress bar: tap to seek
+    const progressTrack = $('.progress-bar-track');
+    progressTrack.addEventListener('click', (e) => {
+        if (!currentPhase || !isPlaying) return;
+        const rect = progressTrack.getBoundingClientRect();
+        const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+
+        if (currentPhase === 'rest') {
+            remainingMs = totalPhaseMs * (1 - fraction);
+        } else {
+            remainingMs = totalPhaseMs * fraction;
+        }
+
+        remainingMs = Math.max(0, remainingMs);
+        updateCountdown();
+        updateCompletionTime();
+    });
+
     // Grip image lightbox
     document.querySelectorAll('.grip-card img').forEach(img => {
         img.addEventListener('click', () => {
