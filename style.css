@@ -1203,6 +1203,62 @@ a {
     line-height: 36px;
 }
 
+.settings-row-slider {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+.settings-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.settings-vibration-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.vibration-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    outline: none;
+    margin: 4px 0 2px;
+}
+
+.vibration-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    transition: transform 0.15s;
+}
+
+.vibration-slider::-webkit-slider-thumb:active {
+    transform: scale(1.15);
+}
+
+.vibration-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
 .settings-link {
     color: var(--accent);
     font-size: 14px;

@@ -16,7 +16,7 @@ let isPlaying = false;
 let selectedIndices = new Set();
 let audioCtx = null;
 let wakeLock = null;
-let settings = { vibration: true, beepCount: 3 };
+let settings = { vibration: 500, beepCount: 3 };
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -64,8 +64,8 @@ function playBeep(duration = 0.25, frequency = 1000) {
     } catch (_) { /* audio not available */ }
 }
 
-function vibrate(ms = 80) {
-    if (settings.vibration && navigator.vibrate) navigator.vibrate(ms);
+function vibrate() {
+    if (settings.vibration > 0 && navigator.vibrate) navigator.vibrate(settings.vibration);
 }
 
 // ── Wake Lock ──
@@ -93,7 +93,8 @@ function loadSettings() {
         try {
             const parsed = JSON.parse(saved);
             if (typeof parsed === 'object') {
-                if (typeof parsed.vibration === 'boolean') settings.vibration = parsed.vibration;
+                if (typeof parsed.vibration === 'number') settings.vibration = Math.max(0, Math.min(1500, parsed.vibration));
+                else if (typeof parsed.vibration === 'boolean') settings.vibration = parsed.vibration ? 500 : 0;
                 if (typeof parsed.beepCount === 'number') settings.beepCount = Math.max(0, Math.min(10, parsed.beepCount));
             }
         } catch (_) { /* ignore */ }
@@ -102,6 +103,13 @@ function loadSettings() {
 
 function saveSettings() {
     localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+}
+
+function updateVibrationLabel() {
+    const el = $('#vibration-value');
+    if (!el) return;
+    const ms = settings.vibration;
+    el.textContent = ms === 0 ? 'None' : parseFloat((ms / 1000).toFixed(2)) + 's';
 }
 
 // ── Protocols & Persistence ──
@@ -760,7 +768,6 @@ function tick() {
 
     if (currentPhase === 'rest' && seconds >= 1 && seconds <= settings.beepCount && seconds !== lastBeepSecond) {
         playBeep(0.2, 1000);
-        vibrate(50);
         lastBeepSecond = seconds;
     }
 
@@ -770,7 +777,7 @@ function tick() {
 
         if (currentPhase === 'rest') {
             playBeep(0.4, 1500);
-            vibrate(150);
+            vibrate();
             currentPhase = 'hang';
             totalPhaseMs = routine[currentIndex].hang * 1000;
             remainingMs = totalPhaseMs;
@@ -778,7 +785,7 @@ function tick() {
             intervalId = setInterval(tick, 100);
         } else {
             playBeep(0.3, 2000);
-            vibrate(100);
+            vibrate();
 
             if (currentIndex + 1 < routine.length) {
                 currentIndex++;
@@ -864,7 +871,8 @@ function showView(view) {
         renderEditList();
     } else if (view === 'settings') {
         settingsView.classList.add('active');
-        $('#setting-vibration').checked = settings.vibration;
+        $('#setting-vibration').value = settings.vibration;
+        updateVibrationLabel();
         $('#setting-beep-count').textContent = settings.beepCount;
     }
 }
@@ -1070,8 +1078,9 @@ function setupEventListeners() {
 
     $('#btn-settings-back').addEventListener('click', () => showView('timer'));
 
-    $('#setting-vibration').addEventListener('change', (e) => {
-        settings.vibration = e.target.checked;
+    $('#setting-vibration').addEventListener('input', (e) => {
+        settings.vibration = parseInt(e.target.value, 10);
+        updateVibrationLabel();
         saveSettings();
     });
 

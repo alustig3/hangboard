@@ -154,15 +154,13 @@
             <div class="settings-content">
                 <div class="settings-section">
                     <h2 class="settings-section-title">Timer</h2>
-                    <div class="settings-row">
-                        <div class="settings-row-info">
-                            <div class="settings-label">Vibration</div>
-                            <div class="settings-desc">Vibrate on phase changes</div>
+                    <div class="settings-row settings-row-slider">
+                        <div class="settings-row-top">
+                            <div class="settings-label">Vibration duration</div>
+                            <div class="settings-vibration-value" id="vibration-value">0.5s</div>
                         </div>
-                        <label class="toggle">
-                            <input type="checkbox" id="setting-vibration" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
+                        <div class="settings-desc">Vibrate when hang starts and ends</div>
+                        <input type="range" id="setting-vibration" class="vibration-slider" min="0" max="1500" step="250" value="500">
                     </div>
                     <div class="settings-row">
                         <div class="settings-row-info">
