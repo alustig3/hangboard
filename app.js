@@ -105,12 +105,6 @@ function saveSettings() {
     localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
 }
 
-function updateVibrationLabel() {
-    const el = $('#vibration-value');
-    if (!el) return;
-    const ms = settings.vibration;
-    el.textContent = ms === 0 ? 'None' : parseFloat((ms / 1000).toFixed(2)) + 's';
-}
 
 // ── Protocols & Persistence ──
 
@@ -871,8 +865,7 @@ function showView(view) {
         renderEditList();
     } else if (view === 'settings') {
         settingsView.classList.add('active');
-        $('#setting-vibration').value = settings.vibration;
-        updateVibrationLabel();
+        $('#setting-vibration').checked = settings.vibration > 0;
         $('#setting-beep-count').textContent = settings.beepCount;
     }
 }
@@ -1078,9 +1071,8 @@ function setupEventListeners() {
 
     $('#btn-settings-back').addEventListener('click', () => showView('timer'));
 
-    $('#setting-vibration').addEventListener('input', (e) => {
-        settings.vibration = parseInt(e.target.value, 10);
-        updateVibrationLabel();
+    $('#setting-vibration').addEventListener('change', (e) => {
+        settings.vibration = e.target.checked ? 500 : 0;
         saveSettings();
     });
 
