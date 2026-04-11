@@ -16,16 +16,6 @@
     <div id="app">
         <!-- Timer View -->
         <div id="timer-view" class="view active">
-            <header class="header">
-                <h1 class="app-title"><a href="https://github.com/alustig3/hangboard" target="_blank" rel="noopener">Hang Timer</a></h1>
-                <button id="btn-edit" class="icon-btn" aria-label="Edit routine">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                    </svg>
-                </button>
-            </header>
-
             <div class="timer-display">
                 <div class="progress-bar-track">
                     <div id="progress-bar-fill" class="progress-bar-fill"></div>
@@ -57,6 +47,21 @@
                     <div id="time-done" class="controls-time"></div>
                 </div>
             </div>
+
+            <div class="bottom-bar">
+                <button id="protocol-picker" class="protocol-picker" aria-label="Choose routine">
+                    <span id="protocol-name" class="protocol-name">Hang Timer</span>
+                    <svg class="protocol-picker-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <button id="btn-edit" class="icon-btn btn-edit-routine" aria-label="Edit routine">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Edit View -->
@@ -68,36 +73,19 @@
                         <polyline points="12 19 5 12 12 5"/>
                     </svg>
                 </button>
-                <h1 class="app-title">Edit Routine</h1>
-                <button id="btn-add" class="icon-btn" aria-label="Add timer">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                </button>
+                <div class="header-actions">
+                    <button id="btn-delete-routine" class="btn btn-delete-routine" aria-label="Delete routine">Delete</button>
+                    <button id="btn-share" class="btn btn-share" aria-label="Share routine">Share</button>
+                </div>
             </header>
 
-            <details class="info-panel" open>
+            <div class="edit-protocol-header">
+                <input type="text" id="edit-title" class="edit-title-input" placeholder="Routine name">
+            </div>
+
+            <details class="info-panel" id="description-panel" open>
                 <summary>About this routine</summary>
-                <p>
-                    Based on Dave MacLeod's
-                    <a href="https://youtu.be/PebF3NyEGPc?si=bg1f0wf3lGNIgEm6" target="_blank" rel="noopener">hangboard routine</a>.
-                    8 warm-up sets followed by 9 &ldquo;max hang&rdquo; sets.
-                </p>
-                <div class="grip-images">
-                    <figure class="grip-card">
-                        <img src="grips/crimp.jpg" alt="Half Crimp" loading="lazy">
-                        <figcaption>Half Crimp</figcaption>
-                    </figure>
-                    <figure class="grip-card">
-                        <img src="grips/chisel.jpg" alt="Chisel" loading="lazy">
-                        <figcaption>Chisel</figcaption>
-                    </figure>
-                    <figure class="grip-card">
-                        <img src="grips/drag.jpg" alt="Drag" loading="lazy">
-                        <figcaption>Drag</figcaption>
-                    </figure>
-                </div>
+                <div id="protocol-description" class="protocol-description"></div>
             </details>
 
             <div class="edit-list-header">
@@ -144,6 +132,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- Protocol Picker Modal -->
+        <div id="protocol-modal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-sheet">
+                <h2>Routines</h2>
+                <div id="protocol-list-items" class="protocol-list-items"></div>
+                <button id="btn-new-protocol" class="btn btn-secondary btn-full">+ New Routine</button>
+            </div>
+        </div>
+
+        <!-- Import Confirmation Modal -->
+        <div id="import-modal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-sheet">
+                <h2>Import Routine</h2>
+                <div class="import-preview">
+                    <div class="import-preview-title" id="import-title"></div>
+                    <div class="import-preview-meta" id="import-step-count"></div>
+                    <div class="import-preview-desc" id="import-description"></div>
+                </div>
+                <div class="modal-actions">
+                    <button id="btn-import-decline" class="btn btn-secondary">Cancel</button>
+                    <button id="btn-import-accept" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
     </div>
     <script src="app.js"></script>
 </body>
