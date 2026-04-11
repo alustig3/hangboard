@@ -1,6 +1,7 @@
 const STORAGE_KEY_LEGACY = 'hangTimerRoutine';
 const STORAGE_KEY_PROTOCOLS = 'hangTimerProtocols';
 const STORAGE_KEY_ACTIVE = 'hangTimerActiveProtocolId';
+const STORAGE_KEY_SETTINGS = 'hangTimerSettings';
 const DEFAULT_PROTOCOL_ID = 'default';
 
 let protocols = [];
@@ -15,12 +16,14 @@ let isPlaying = false;
 let selectedIndices = new Set();
 let audioCtx = null;
 let wakeLock = null;
+let settings = { vibration: true, beepCount: 3 };
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
 const timerView = $('#timer-view');
 const editView = $('#edit-view');
+const settingsView = $('#settings-view');
 const timerList = $('#timer-list');
 const editList = $('#edit-list');
 const countdownEl = $('#countdown');
@@ -62,7 +65,7 @@ function playBeep(duration = 0.25, frequency = 1000) {
 }
 
 function vibrate(ms = 80) {
-    if (navigator.vibrate) navigator.vibrate(ms);
+    if (settings.vibration && navigator.vibrate) navigator.vibrate(ms);
 }
 
 // ── Wake Lock ──
@@ -80,6 +83,25 @@ function releaseWakeLock() {
         wakeLock.release().catch(() => {});
         wakeLock = null;
     }
+}
+
+// ── Settings ──
+
+function loadSettings() {
+    const saved = localStorage.getItem(STORAGE_KEY_SETTINGS);
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (typeof parsed === 'object') {
+                if (typeof parsed.vibration === 'boolean') settings.vibration = parsed.vibration;
+                if (typeof parsed.beepCount === 'number') settings.beepCount = Math.max(0, Math.min(10, parsed.beepCount));
+            }
+        } catch (_) { /* ignore */ }
+    }
+}
+
+function saveSettings() {
+    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
 }
 
 // ── Protocols & Persistence ──
@@ -736,7 +758,7 @@ function tick() {
 
     const seconds = Math.ceil(remainingMs / 1000);
 
-    if (currentPhase === 'rest' && seconds >= 1 && seconds <= 3 && seconds !== lastBeepSecond) {
+    if (currentPhase === 'rest' && seconds >= 1 && seconds <= settings.beepCount && seconds !== lastBeepSecond) {
         playBeep(0.2, 1000);
         vibrate(50);
         lastBeepSecond = seconds;
@@ -819,14 +841,16 @@ function reset() {
 // ── View Switching ──
 
 function showView(view) {
+    timerView.classList.remove('active');
+    editView.classList.remove('active');
+    settingsView.classList.remove('active');
+
     if (view === 'timer') {
         timerView.classList.add('active');
-        editView.classList.remove('active');
         renderTimerList();
         updateCompletionTime();
-    } else {
+    } else if (view === 'edit') {
         editView.classList.add('active');
-        timerView.classList.remove('active');
         selectedIndices.clear();
         const proto = getActiveProtocol();
         $('#edit-title').value = proto.title;
@@ -838,6 +862,10 @@ function showView(view) {
         }
         renderProtocolDescription();
         renderEditList();
+    } else if (view === 'settings') {
+        settingsView.classList.add('active');
+        $('#setting-vibration').checked = settings.vibration;
+        $('#setting-beep-count').textContent = settings.beepCount;
     }
 }
 
@@ -1036,6 +1064,32 @@ function setupEventListeners() {
         const proto = getActiveProtocol();
         proto.title = e.target.value.trim() || proto.title;
     });
+
+    // Settings
+    $('#btn-settings').addEventListener('click', () => showView('settings'));
+
+    $('#btn-settings-back').addEventListener('click', () => showView('timer'));
+
+    $('#setting-vibration').addEventListener('change', (e) => {
+        settings.vibration = e.target.checked;
+        saveSettings();
+    });
+
+    $('#beep-decrement').addEventListener('click', () => {
+        if (settings.beepCount > 0) {
+            settings.beepCount--;
+            $('#setting-beep-count').textContent = settings.beepCount;
+            saveSettings();
+        }
+    });
+
+    $('#beep-increment').addEventListener('click', () => {
+        if (settings.beepCount < 10) {
+            settings.beepCount++;
+            $('#setting-beep-count').textContent = settings.beepCount;
+            saveSettings();
+        }
+    });
 }
 
 function promptShareUrl(url) {
@@ -1057,6 +1111,7 @@ function escapeAttr(str) {
 // ── Init ──
 
 function init() {
+    loadSettings();
     loadProtocols();
     renderProtocolTitle();
     renderTimerList();

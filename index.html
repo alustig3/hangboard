@@ -49,13 +49,18 @@
             </div>
 
             <div class="bottom-bar">
+                <button id="btn-settings" class="icon-btn btn-bottom-action" aria-label="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </button>
                 <button id="protocol-picker" class="protocol-picker" aria-label="Choose routine">
                     <span id="protocol-name" class="protocol-name">Hang Timer</span>
                     <svg class="protocol-picker-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
                 </button>
-                <button id="btn-edit" class="icon-btn btn-edit-routine" aria-label="Edit routine">
+                <button id="btn-edit" class="icon-btn btn-bottom-action" aria-label="Edit routine">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -128,6 +133,54 @@
                     <div class="modal-actions">
                         <button id="btn-modal-cancel" class="btn btn-secondary">Cancel</button>
                         <button id="btn-modal-apply" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settings-view" class="view">
+            <header class="header">
+                <button id="btn-settings-back" class="icon-btn" aria-label="Back">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12 19 5 12 12 5"/>
+                    </svg>
+                </button>
+                <h1 class="app-title">Settings</h1>
+                <div style="width:44px"></div>
+            </header>
+
+            <div class="settings-content">
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Timer</h2>
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <div class="settings-label">Vibration</div>
+                            <div class="settings-desc">Vibrate on phase changes</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="setting-vibration" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <div class="settings-label">Countdown beeps</div>
+                            <div class="settings-desc">Beeps before hang starts</div>
+                        </div>
+                        <div class="spinbox">
+                            <button class="spinbox-btn" id="beep-decrement" aria-label="Decrease">−</button>
+                            <span class="spinbox-value" id="setting-beep-count">3</span>
+                            <button class="spinbox-btn" id="beep-increment" aria-label="Increase">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="settings-section-title">Source Code</h2>
+                    <div class="settings-row">
+                        <a href="https://github.com/alustig3/hangboard" target="_blank" rel="noopener" class="settings-link">github.com/alustig3/hangboard</a>
                     </div>
                 </div>
             </div>
